@@ -1,0 +1,90 @@
+@using CustomInventoryApp.Models
+@model IEnumerable<ApplicationUser>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "User Management Console";
+}
+
+<div class="container mt-4">
+    <div class="mb-4">
+        <h1 class="h3 text-danger fw-bold mb-1"><i class="bi bi-shield-lock"></i> Administration Control Panel</h1>
+        <p class="text-muted">Perform batch operations to block, unblock, or remove system operator nodes.</p>
+    </div>
+
+    <form id="adminControlForm" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="d-flex flex-wrap gap-2 mb-3 bg-light p-3 border rounded shadow-sm">
+            <button type="submit" formaction="/Admin/BlockUsers" class="btn btn-warning btn-sm fw-bold px-3">
+                <i class="bi bi-person-fill-lock"></i> Block Selected
+            </button>
+            <button type="submit" formaction="/Admin/UnblockUsers" class="btn btn-success btn-sm fw-bold px-3">
+                <i class="bi bi-person-check-fill"></i> Unblock Selected
+            </button>
+            <button type="submit" formaction="/Admin/DeleteUsers" class="btn btn-danger btn-sm fw-bold px-3" onclick="return confirm('Are you completely sure you want to permanently delete selected users? This cannot be undone.');">
+                <i class="bi bi-person-x-fill"></i> Delete Selected
+            </button>
+        </div>
+
+        <div class="card shadow-sm border rounded">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 small">
+                    <thead class="table-light border-bottom text-uppercase fw-bold text-muted" style="font-size: 0.8rem;">
+                        <tr>
+                            <th class="ps-4" style="width: 40px;">
+                                <input type="checkbox" class="form-check-input" id="selectAllCheckbox" />
+                            </th>
+                            <th>Username Handle</th>
+                            <th>Email Address</th>
+                            <th>Account Status</th>
+                            <th class="pe-4 text-end">Access Permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            bool isBlocked = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow;
+                            string rowClass = isBlocked ? "table-danger-subtle text-muted" : "";
+
+                            <tr class="@rowClass">
+                                <td class="ps-4">
+                                    <input type="checkbox" name="selectedUserIds" value="@user.Id" class="form-check-input user-checkbox" />
+                                </td>
+                                <td class="fw-bold text-dark">@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    @if (isBlocked)
+                                    {
+                                        <span class="badge bg-danger text-white px-2 py-1"><i class="bi bi-lock-fill"></i> Blocked</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success text-white px-2 py-1"><i class="bi bi-unlock-fill"></i> Active</span>
+                                    }
+                                </td>
+                                <td class="pe-4 text-end font-monospace text-secondary fw-bold">
+                                    @(await UserManager.IsInRoleAsync(user, "Admin") ? "Administrator" : "Standard User")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const selectAll = document.getElementById("selectAllCheckbox");
+            const checkboxes = document.querySelectorAll(".user-checkbox");
+
+            selectAll.addEventListener("change", () => {
+                checkboxes.forEach(cb => cb.checked = selectAll.checked);
+            });
+        });
+    </script>
+}

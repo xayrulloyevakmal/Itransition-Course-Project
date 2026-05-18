@@ -1,0 +1,138 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using CustomInventoryApp.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    string activeTheme = "light";
+    if (SignInManager.IsSignedIn(User))
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        activeTheme = currentUser?.Theme?.ToLower() ?? "light";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="@activeTheme">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CustomInventoryApp</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom shadow-sm mb-3">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-box-seam-fill"></i> AssetTrack
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between align-items-center">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Inventory" asp-action="Index">Dashboard</a>
+                        </li>
+                        
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-danger fw-bold" href="/Admin/Users">
+                                    <i class="bi bi-shield-lock-fill"></i> Admin Panel
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    <form class="d-flex mx-auto w-100 mb-2 mb-sm-0" action="/Home/Search" method="get" style="max-width: 400px;">
+                        <div class="input-group">
+                            <input class="form-control form-control-sm border-end-0 rounded-start-pill ps-3 bg-light text-dark shadow-none" 
+                                   type="search" 
+                                   name="query" 
+                                   placeholder="Search assets, fields or templates..." 
+                                   aria-label="Search" 
+                                   required />
+                            <button class="btn btn-sm btn-light border border-start-0 rounded-end-pill pe-3 text-muted" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <ul class="navbar-nav align-items-center gap-2">
+                        <li class="nav-item">
+                            <button id="themeToggleBtn" class="btn btn-link nav-link px-2 text-secondary shadow-none border-0" type="button" aria-label="Toggle system theme">
+                                <i class="bi bi-sun-fill text-warning fs-5" id="themeIcon"></i>
+                            </button>
+                        </li>
+                        
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid px-4">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted bg-body-tertiary">
+        <div class="container-fluid px-4 py-2 text-center small">
+            &copy; @DateTime.UtcNow.Year - AssetTrack Custom Management Engine Loop Framework. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const themeToggleBtn = document.getElementById("themeToggleBtn");
+            const htmlElement = document.documentElement;
+            const themeIcon = document.getElementById("themeIcon");
+
+            function updateIcon(theme) {
+                if (theme === "dark") {
+                    themeIcon.className = "bi bi-moon-stars-fill text-info fs-5";
+                } else {
+                    themeIcon.className = "bi bi-sun-fill text-warning fs-5";
+                }
+            }
+
+            updateIcon(htmlElement.getAttribute("data-bs-theme"));
+
+            themeToggleBtn.addEventListener("click", async () => {
+                let currentTheme = htmlElement.getAttribute("data-bs-theme");
+                let targetTheme = currentTheme === "dark" ? "light" : "dark";
+                
+                htmlElement.setAttribute("data-bs-theme", targetTheme);
+                updateIcon(targetTheme);
+                localStorage.setItem("user-fallback-theme", targetTheme);
+                
+                try {
+                    await fetch('/AccountPreferences/SaveTheme', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ theme: targetTheme })
+                    });
+                } catch (err) {
+                    console.warn("Preference update pipeline passed to client-side offline storage cache context layout maps.");
+                }
+            });
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

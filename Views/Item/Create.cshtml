@@ -1,0 +1,126 @@
+@model Itransition_Course_Project.ViewModels.ItemFormViewModel
+
+@{
+    ViewData["Title"] = "Log Asset Record";
+}
+
+<div class="container mt-4" style="max-width: 720px;">
+    <div class="mb-4">
+        <h1 class="h3 text-secondary mb-1">Add Asset Entry</h1>
+        <p class="text-muted">Registering new item row into collection template: <span class="fw-bold text-dark">@Model.InventoryTitle</span></p>
+    </div>
+
+    <form href="/Item/Create" method="post" class="needs-validation">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="InventoryId" />
+        <input type="hidden" asp-for="InventoryTitle" />
+
+        <div class="card shadow-sm border rounded mb-4">
+            <div class="card-header bg-light py-3 fw-bold text-secondary">
+                <i class="bi bi-file-earmark-plus-fill text-primary"></i> Fill Configured Asset Parameters
+            </div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    
+                    @if (Model.CustomString1_State)
+                    {
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomString1_Name</label>
+                            <input asp-for="CustomString1_Value" class="form-control" required />
+                            <input type="hidden" asp-for="CustomString1_State" value="true"/>
+                            <input type="hidden" asp-for="CustomString1_Name" />
+                        </div>
+                    }
+                    @if (Model.CustomString2_State)
+                    {
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomString2_Name</label>
+                            <input asp-for="CustomString2_Value" class="form-control" required />
+                            <input type="hidden" asp-for="CustomString2_State" value="true"/>
+                            <input type="hidden" asp-for="CustomString2_Name" />
+                        </div>
+                    }
+                    @if (Model.CustomString3_State)
+                    {
+                        <div class="col-12">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomString3_Name</label>
+                            <input asp-for="CustomString3_Value" class="form-control" required />
+                            <input type="hidden" asp-for="CustomString3_State" value="true"/>
+                            <input type="hidden" asp-for="CustomString3_Name" />
+                        </div>
+                    }
+
+                    @if (Model.CustomInt1_State)
+                    {
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomInt1_Name</label>
+                            <input asp-for="CustomInt1_Value" type="number" class="form-control" required />
+                            <input type="hidden" asp-for="CustomInt1_State" value="true"/>
+                            <input type="hidden" asp-for="CustomInt1_Name" />
+                        </div>
+                    }
+                    @if (Model.CustomInt2_State)
+                    {
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomInt2_Name</label>
+                            <input asp-for="CustomInt2_Value" type="number" class="form-control" required />
+                            <input type="hidden" asp-for="CustomInt2_State" value="true"/>
+                            <input type="hidden" asp-for="CustomInt2_Name" />
+                        </div>
+                    }
+                    @if (Model.CustomInt3_State)
+                    {
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted">@Model.CustomInt3_Name</label>
+                            <input asp-for="CustomInt3_Value" type="number" class="form-control" required />
+                            <input type="hidden" asp-for="CustomInt3_State" value="true"/>
+                            <input type="hidden" asp-for="CustomInt3_Name" />
+                        </div>
+                    }
+
+                    @if (Model.CustomBool1_State || Model.CustomBool2_State || Model.CustomBool3_State)
+                    {
+                        <div class="col-12 mt-4">
+                            <h6 class="text-uppercase text-muted small fw-bold tracking-wider border-bottom pb-2 mb-3">Additional Switches</h6>
+                            <div class="d-flex flex-wrap gap-4">
+                                @if (Model.CustomBool1_State)
+                                {
+                                    <div class="form-check form-switch">
+                                        <input asp-for="CustomBool1_Value" class="form-check-input" type="checkbox" id="itemBool1">
+                                        <label class="form-check-label small fw-bold text-secondary" for="itemBool1">@Model.CustomBool1_Name</label>
+                                        <input type="hidden" asp-for="CustomBool1_State" value="true"/>
+                                        <input type="hidden" asp-for="CustomBool1_Name" />
+                                    </div>
+                                }
+                                @if (Model.CustomBool2_State)
+                                {
+                                    <div class="form-check form-switch">
+                                        <input asp-for="CustomBool2_Value" class="form-check-input" type="checkbox" id="itemBool2">
+                                        <label class="form-check-label small fw-bold text-secondary" for="itemBool2">@Model.CustomBool2_Name</label>
+                                        <input type="hidden" asp-for="CustomBool2_State" value="true"/>
+                                        <input type="hidden" asp-for="CustomBool2_Name" />
+                                    </div>
+                                }
+                                @if (Model.CustomBool3_State)
+                                {
+                                    <div class="form-check form-switch">
+                                        <input asp-for="CustomBool3_Value" class="form-check-input" type="checkbox" id="itemBool3">
+                                        <label class="form-check-label small fw-bold text-secondary" for="itemBool3">@Model.CustomBool3_Name</label>
+                                        <input type="hidden" asp-for="CustomBool3_State" value="true"/>
+                                        <input type="hidden" asp-for="CustomBool3_Name" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mb-5">
+            <a href="/Inventory/Details/@Model.InventoryId" class="btn btn-light px-4 border">Cancel</a>
+            <button type="submit" class="btn btn-success px-5 shadow-sm fw-bold">Commit Asset Record</button>
+        </div>
+    </form>
+</div>

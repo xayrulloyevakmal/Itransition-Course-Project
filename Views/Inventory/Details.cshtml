@@ -1,0 +1,143 @@
+@using Itransition_Course_Project.Services
+@model Itransition_Course_Project.ViewModels.InventoryDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Inventory.Title;
+}
+
+<div class="container mt-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start border-bottom pb-4 mb-4 gap-3">
+        <div>
+            <div class="mb-1">
+                <a href="/Inventory/Index" class="text-decoration-none small text-muted"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
+            </div>
+            <h1 class="h2 text-secondary fw-bold mb-1">@Model.Inventory.Title</h1>
+            <span class="badge bg-primary-subtle text-primary border px-2.5 py-1 small text-uppercase fw-bold">
+                <i class="bi bi-tag-fill me-1"></i> @Model.Inventory.Category
+            </span>
+            <span class="text-muted small ms-2">Managed by <strong class="text-dark">@Model.Inventory.Creator?.UserName</strong></span>
+        </div>
+        
+        <div>
+            @if (User.Identity is { IsAuthenticated: true })
+            {
+                <a href="/Item/Create?inventoryId=@Model.Inventory.Id" class="btn btn-success shadow-sm fw-bold px-4">
+                    <i class="bi bi-plus-circle-fill"></i> Add Asset Record
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card shadow-sm border rounded mb-4">
+                <div class="card-header bg-light py-3 fw-bold text-secondary">
+                    <i class="bi bi-file-text-fill text-primary"></i> Collection Context
+                </div>
+                <div class="card-body p-4">
+                    <div class="text-secondary lh-base">
+                        @Model.Inventory.Description.ParseMarkdownToHtml()
+                    </div>
+                    <hr />
+                    <div class="small">
+                        <div class="text-muted fw-bold text-uppercase tracking-wider mb-2" style="font-size: 0.75rem;">System Parameters</div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">Auto-ID Rule:</span>
+                            <span class="font-monospace bg-light border px-2 py-0.2 rounded small">@Model.Inventory.CustomIdFormat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card shadow-sm border rounded">
+                <div class="card-header bg-light py-3 fw-bold text-secondary d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-table text-success"></i> Registered Asset Ledger</span>
+                    <span class="badge bg-secondary rounded-pill small">@Model.Items.Count() Entries</span>
+                </div>
+                <div class="card-body p-0">
+                    @if (!Model.Items.Any())
+                    {
+                        <div class="text-center py-5 my-4">
+                            <i class="bi bi-inboxes text-muted fs-2 d-block mb-2"></i>
+                            <span class="text-muted small">No items have been committed into this inventory schema yet.</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0 small">
+                                <thead class="table-light border-bottom text-uppercase fw-bold text-muted" style="font-size: 0.8rem;">
+                                    <tr>
+                                        <th class="ps-4">Asset ID</th>
+                                        @if (Model.Inventory.CustomString1_State == true) { <th>@Model.Inventory.CustomString1_Name</th> }
+                                        @if (Model.Inventory.CustomString2_State == true) { <th>@Model.Inventory.CustomString2_Name</th> }
+                                        @if (Model.Inventory.CustomString3_State == true) { <th>@Model.Inventory.CustomString3_Name</th> }
+                                        
+                                        @if (Model.Inventory.CustomInt1_State == true) { <th>@Model.Inventory.CustomInt1_Name</th> }
+                                        @if (Model.Inventory.CustomInt2_State == true) { <th>@Model.Inventory.CustomInt2_Name</th> }
+                                        @if (Model.Inventory.CustomInt3_State == true) { <th>@Model.Inventory.CustomInt3_Name</th> }
+                                        
+                                        @if (Model.Inventory.CustomBool1_State == true) { <th>@Model.Inventory.CustomBool1_Name</th> }
+                                        @if (Model.Inventory.CustomBool2_State == true) { <th>@Model.Inventory.CustomBool2_Name</th> }
+                                        @if (Model.Inventory.CustomBool3_State == true) { <th>@Model.Inventory.CustomBool3_Name</th> }
+                                        
+                                        <th class="pe-4 text-end">Logged By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <tr>
+                                            <td class="ps-4 fw-bold text-primary font-monospace">@item.CustomId</td>
+                                            
+                                            @if (Model.Inventory.CustomString1_State == true) { <td>@item.CustomString1_Value</td> }
+                                            @if (Model.Inventory.CustomString2_State == true) { <td>@item.CustomString2_Value</td> }
+                                            @if (Model.Inventory.CustomString3_State == true) { <td>@item.CustomString3_Value</td> }
+                                            
+                                            @if (Model.Inventory.CustomInt1_State == true) { <td>@item.CustomInt1_Value</td> }
+                                            @if (Model.Inventory.CustomInt2_State == true) { <td>@item.CustomInt2_Value</td> }
+                                            @if (Model.Inventory.CustomInt3_State == true) { <td>@item.CustomInt3_Value</td> }
+                                            
+                                            @if (Model.Inventory.CustomBool1_State == true)
+                                            {
+                                                <td>
+                                                    <span class="badge @(item.CustomBool1_Value == true ? "bg-success-subtle text-success border border-success-subtle" : "bg-danger-subtle text-danger border border-danger-subtle") px-2 rounded-pill font-size-xs">
+                                                        @(item.CustomBool1_Value == true ? "Yes" : "No")
+                                                    </span>
+                                                </td>
+                                            }
+                                            @if (Model.Inventory.CustomBool2_State == true)
+                                            {
+                                                <td>
+                                                    <span class="badge @(item.CustomBool2_Value == true ? "bg-success-subtle text-success border border-success-subtle" : "bg-danger-subtle text-danger border border-danger-subtle") px-2 rounded-pill font-size-xs">
+                                                        @(item.CustomBool2_Value == true ? "Yes" : "No")
+                                                    </span>
+                                                </td>
+                                            }
+                                            @if (Model.Inventory.CustomBool3_State == true)
+                                            {
+                                                <td>
+                                                    <span class="badge @(item.CustomBool3_Value == true ? "bg-success-subtle text-success border border-success-subtle" : "bg-danger-subtle text-danger border border-danger-subtle") px-2 rounded-pill font-size-xs">
+                                                        @(item.CustomBool3_Value == true ? "Yes" : "No")
+                                                    </span>
+                                                </td>
+                                            }
+
+                                            <td class="pe-4 text-end text-muted small">@item.CreatedBy?.UserName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .font-size-xs { font-size: 0.72rem; }
+</style>

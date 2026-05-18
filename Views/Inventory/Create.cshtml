@@ -1,0 +1,138 @@
+@model Itransition_Course_Project.ViewModels.CreateInventoryViewModel
+
+@{
+    ViewData["Title"] = "Configure New Inventory Template";
+}
+
+<div class="container mt-4" style="max-width: 850px;">
+    <div class="mb-4">
+        <h1 class="h3 text-secondary mb-1">Create Inventory Collection</h1>
+        <p class="text-muted">Set up core properties and selectively authorize custom item metadata tracking values.</p>
+    </div>
+
+    <form href="/Inventory/Create" method="post" class="needs-validation">
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow-sm border rounded mb-4">
+            <div class="card-header bg-light py-3 fw-bold text-secondary"><i class="bi bi-info-circle-fill text-primary"></i> Template Metadata Information</div>
+            <div class="card-body p-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase">Collection Title</label>
+                        <input asp-for="Title" class="form-control" placeholder="e.g., Corporate Hardware Assets" required />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase">Category Classification</label>
+                        <select asp-for="Category" class="form-select" required>
+                            <option value="">-- Choose Category --</option>
+                            <option value="Electronics">Electronics & Computing</option>
+                            <option value="Furniture">Office Furniture</option>
+                            <option value="Books">Books & Documentation</option>
+                            <option value="Vehicles">Automotive & Vehicles</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label small fw-bold text-muted text-uppercase">Description Purpose</label>
+                        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Describe what type of item entries this collection supports..." required></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small fw-bold text-muted text-uppercase">Custom Asset Auto-ID format Rule</label>
+                        <input asp-for="CustomIdFormat" class="form-control font-monospace" placeholder="e.g., TECH-{0:0000}" required />
+                        <span asp-validation-for="CustomIdFormat" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border rounded mb-4">
+            <div class="card-header bg-light py-3 fw-bold text-secondary"><i class="bi bi-sliders text-warning"></i> Optional Property Field Configuration Template Matrix</div>
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">Toggle on only the data metrics required for entries in this custom inventory pool.</p>
+
+                <h6 class="text-uppercase text-primary small fw-bold tracking-wider border-bottom pb-2 mb-3">Custom Text Lines (Up to 3 Slots)</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomString1_State" class="form-check-input" type="checkbox" id="str1Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="str1Check">Enable Custom Input 1</label>
+                        </div>
+                        <input asp-for="CustomString1_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomString2_State" class="form-check-input" type="checkbox" id="str2Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="str2Check">Enable Custom Input 2</label>
+                        </div>
+                        <input asp-for="CustomString2_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomString3_State" class="form-check-input" type="checkbox" id="str3Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="str3Check">Enable Custom Input 3</label>
+                        </div>
+                        <input asp-for="CustomString3_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                </div>
+
+                <h6 class="text-uppercase text-success small fw-bold tracking-wider border-bottom pb-2 mb-3">Custom Whole Numbers Counters (Up to 3 Slots)</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomInt1_State" class="form-check-input" type="checkbox" id="int1Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="int1Check">Enable Integer Value 1</label>
+                        </div>
+                        <input asp-for="CustomInt1_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomInt2_State" class="form-check-input" type="checkbox" id="int2Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="int2Check">Enable Integer Value 2</label>
+                        </div>
+                        <input asp-for="CustomInt2_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomInt3_State" class="form-check-input" type="checkbox" id="int3Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="int3Check">Enable Integer Value 3</label>
+                        </div>
+                        <input asp-for="CustomInt3_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                </div>
+
+                <h6 class="text-uppercase text-info small fw-bold tracking-wider border-bottom pb-2 mb-3">Custom Binary Switches (Up to 3 Slots)</h6>
+                <div class="row g-3">
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomBool1_State" class="form-check-input" type="checkbox" id="bool1Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="bool1Check">Enable Boolean Switch 1</label>
+                        </div>
+                        <input asp-for="CustomBool1_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4 border-end">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomBool2_State" class="form-check-input" type="checkbox" id="bool2Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="bool2Check">Enable Boolean Switch 2</label>
+                        </div>
+                        <input asp-for="CustomBool2_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check form-switch mb-2">
+                            <input asp-for="CustomBool3_State" class="form-check-input" type="checkbox" id="bool3Check">
+                            <label class="form-check-label small fw-bold text-secondary" for="bool3Check">Enable Boolean Switch 3</label>
+                        </div>
+                        <input asp-for="CustomBool3_Name" class="form-control form-control-sm" placeholder="Field Header Title Label" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mb-5">
+            <a href="/Inventory/Index" class="btn btn-light px-4 border">Cancel</a>
+            <button type="submit" class="btn btn-primary px-5 shadow-sm fw-bold">Generate Template Configuration</button>
+        </div>
+    </form>
+</div>
