@@ -30,21 +30,25 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// 4. Automatic database migration and Admin seeding on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
+        
         context.Database.Migrate();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-        if (!await roleManager.RoleExistsAsync("Admin"))
+        string[] roleNames = { "Admin", "Manager", "Staff" };
+        foreach (var roleName in roleNames)
         {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
+            if (!await roleManager.RoleExistsAsync(roleName))
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
         }
 
         const string adminEmail = "admin@assettrack.com";
@@ -66,19 +70,18 @@ using (var scope = app.Services.CreateScope())
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
             }
         }
-        Console.WriteLine("=== RENDER: Database migration and seeding completed successfully! ===");
+        Console.WriteLine("=== RENDER: Migration and seeding completed successfully! ===");
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred during database migration or seeding on Render.");
+        logger.LogError(ex, "Error during migration or seeding.");
     }
 }
 
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
 }
 else
 {
