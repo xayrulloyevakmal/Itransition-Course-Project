@@ -37,7 +37,7 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         
-        context.Database.Migrate();
+        context.Database.EnsureCreated();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
@@ -70,12 +70,12 @@ using (var scope = app.Services.CreateScope())
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
             }
         }
-        Console.WriteLine("=== RENDER: Migration and seeding completed successfully! ===");
+        Console.WriteLine("=== DATABASE READY ===");
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Error during migration or seeding.");
+        logger.LogError(ex, "Baza tayyorlashda xatolik yuz berdi.");
     }
 }
 
@@ -91,9 +91,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
