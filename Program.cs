@@ -28,11 +28,17 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// Baza migratsiyasi va Seed ma'lumotlar boshlang'ich bloki
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
+        // 1. Dastlab bazani tekshiramiz va jadvallar bo'lmasa, avtomat yaratamiz
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        await context.Database.MigrateAsync();
+
+        // 2. Rollarni tekshiramiz va yaratamiz
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         
@@ -65,7 +71,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the application access roles.");
+        logger.LogError(ex, "Baza tayyorlashda yoki seed qilishda xato yuz berdi.");
     }
 }
 
