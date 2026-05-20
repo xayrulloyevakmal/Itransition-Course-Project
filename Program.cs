@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CustomInventoryApp.Data;
-using CustomInventoryApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,75 +8,40 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
-{
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-.AddRoles<IdentityRole>()
-.AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Baza migratsiyasi va Seed ma'lumotlar boshlang'ich bloki
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        // 1. Dastlab bazani tekshiramiz va jadvallar bo'lmasa, avtomat yaratamiz
         var context = services.GetRequiredService<ApplicationDbContext>();
-        await context.Database.MigrateAsync();
-
-        // 2. Rollarni tekshiramiz va yaratamiz
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-        var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         
-        if (!await roleManager.RoleExistsAsync("Admin"))
-        {
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
-        }
+        context.Database.Migrate();
         
-        const string adminEmail = "admin@assettrack.com";
-        var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-        if (adminUser == null)
-        {
-            var newAdmin = new ApplicationUser
-            {
-                UserName = "supervisor",
-                Email = adminEmail,
-                EmailConfirmed = true,
-                Theme = "dark",
-                Language = "en"
-            };
-            
-            var createResult = await userManager.CreateAsync(newAdmin, "AdminPassword123!");
-            if (createResult.Succeeded)
-            {
-                await userManager.AddToRoleAsync(newAdmin, "Admin");
-            }
-        }
+        Console.WriteLine("=== RENDER: Database migration completed successfully! ===");
     }
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Baza tayyorlashda yoki seed qilishda xato yuz berdi.");
+        logger.LogError(ex, "An error occurred while migrating the database on Render.");
     }
 }
 
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+    app.UseMigrationsEndPoint();
 }
 else
 {
@@ -98,4 +62,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
-await app.RunAsync();
+app.Run();
