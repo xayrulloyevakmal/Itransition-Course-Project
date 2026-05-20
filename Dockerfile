@@ -1,14 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["Itransition Course Project.csproj", "."]
-RUN dotnet restore
+RUN dotnet restore "Itransition Course Project.csproj"
 COPY . .
 
-# Build va Migratsiya toolini ichkarida o'rnatamiz
-RUN dotnet tool install --local dotnet-ef --version 8.0.11
-RUN dotnet ef migrations add InitialPostgres --context ApplicationDbContext
+# Toolni global o'rnatib, PATH-ni aniq ko'rsatamiz
+RUN dotnet tool install -g dotnet-ef --version 8.0.11
+ENV PATH="${PATH}:/root/.dotnet/tools"
 
-RUN dotnet publish -c Release -o /app
+# Migratsiyani to'g'ri loyiha yo'li bilan ishga tushiramiz
+RUN dotnet ef migrations add InitialPostgres --project "Itransition Course Project.csproj"
+
+RUN dotnet publish "Itransition Course Project.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
