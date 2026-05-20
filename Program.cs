@@ -30,13 +30,13 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
+// 4. Automatic database migration and Admin seeding on startup
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-        
         context.Database.Migrate();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
@@ -46,7 +46,6 @@ using (var scope = app.Services.CreateScope())
         {
             await roleManager.CreateAsync(new IdentityRole("Admin"));
         }
-
 
         const string adminEmail = "admin@assettrack.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
