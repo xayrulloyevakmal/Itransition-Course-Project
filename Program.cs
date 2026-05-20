@@ -11,8 +11,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -36,24 +34,20 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
-        
         await context.Database.EnsureCreatedAsync();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-        try 
+        string[] roleNames = { "Admin", "Manager", "Staff" };
+        foreach (var roleName in roleNames)
         {
-            string[] roleNames = { "Admin", "Manager", "Staff" };
-            foreach (var roleName in roleNames)
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-                if (!await roleManager.RoleExistsAsync(roleName))
-                {
-                    await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
+                await roleManager.CreateAsync(new IdentityRole(roleName));
             }
         }
-        catch { 
+
         const string adminEmail = "admin@assettrack.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -73,11 +67,10 @@ using (var scope = app.Services.CreateScope())
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
             }
         }
-        Console.WriteLine("=== DATABASE INITIALIZATION SUCCESSFUL ===");
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"=== DATABASE INIT WARNING: {ex.Message} ===");
+        Console.WriteLine(ex.Message);
     }
 }
 
