@@ -4,7 +4,6 @@ COPY ["Itransition Course Project.csproj", "."]
 RUN dotnet restore "Itransition Course Project.csproj"
 COPY . .
 
-# Faqat loyihani publish qilamiz, ortiqcha tool va build paytidagi migratsiyani olib tashlaymiz
 RUN dotnet publish "Itransition Course Project.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
