@@ -1,0 +1,53 @@
+nohup: ignoring input
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (44ms) [Parameters=[@__normalizedName_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]
+      FROM [AspNetRoles] AS [a]
+      WHERE [a].[NormalizedName] = @__normalizedName_0
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (5ms) [Parameters=[@__normalizedEmail_0='?' (Size = 256)], CommandType='Text', CommandTimeout='30']
+      SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [AspNetUsers] AS [a]
+      WHERE [a].[NormalizedEmail] = @__normalizedEmail_0
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/u2410276/Itransition Course Project
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (6ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT [i].[Id], [i].[Category], [i].[CreatorId], [i].[CustomBool1_Name], [i].[CustomBool1_State], [i].[CustomBool2_Name], [i].[CustomBool2_State], [i].[CustomBool3_Name], [i].[CustomBool3_State], [i].[CustomIdFormat], [i].[CustomInt1_Name], [i].[CustomInt1_State], [i].[CustomInt2_Name], [i].[CustomInt2_State], [i].[CustomInt3_Name], [i].[CustomInt3_State], [i].[CustomString1_Name], [i].[CustomString1_State], [i].[CustomString2_Name], [i].[CustomString2_State], [i].[CustomString3_Name], [i].[CustomString3_State], [i].[CustomText1_Name], [i].[CustomText1_State], [i].[CustomText2_Name], [i].[CustomText2_State], [i].[CustomText3_Name], [i].[CustomText3_State], [i].[Description], [i].[ImageUrl], [i].[IsPublic], [i].[RowVersion], [i].[Title], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[Language], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[Theme], [a].[TwoFactorEnabled], [a].[UserName]
+      FROM [Inventories] AS [i]
+      INNER JOIN [AspNetUsers] AS [a] ON [i].[CreatorId] = [a].[Id]
+info: Microsoft.Hosting.Lifetime[0]
+      Application is shutting down...
