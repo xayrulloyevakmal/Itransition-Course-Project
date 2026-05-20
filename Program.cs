@@ -37,20 +37,23 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         
-        context.Database.EnsureCreated();
+        await context.Database.EnsureCreatedAsync();
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-        string[] roleNames = { "Admin", "Manager", "Staff" };
-        foreach (var roleName in roleNames)
+        try 
         {
-            if (!await roleManager.RoleExistsAsync(roleName))
+            string[] roleNames = { "Admin", "Manager", "Staff" };
+            foreach (var roleName in roleNames)
             {
-                await roleManager.CreateAsync(new IdentityRole(roleName));
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
             }
         }
-
+        catch { 
         const string adminEmail = "admin@assettrack.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
         if (adminUser == null)
@@ -70,12 +73,11 @@ using (var scope = app.Services.CreateScope())
                 await userManager.AddToRoleAsync(newAdmin, "Admin");
             }
         }
-        Console.WriteLine("=== DATABASE READY ===");
+        Console.WriteLine("=== DATABASE INITIALIZATION SUCCESSFUL ===");
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "Baza tayyorlashda xatolik yuz berdi.");
+        Console.WriteLine($"=== DATABASE INIT WARNING: {ex.Message} ===");
     }
 }
 
