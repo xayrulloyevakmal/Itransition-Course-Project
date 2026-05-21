@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CustomInventoryApp.Data;
-using CustomInventoryApp.Services.Interfaces;
+using Itransition_Course_Project.Data;
+using Itransition_Course_Project.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomInventoryApp.Services
+namespace Itransition_Course_Project.Services
 {
     public class CustomIdGeneratorService : ICustomIdGeneratorService
     {

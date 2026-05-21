@@ -3,24 +3,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace Itransition_Course_Project.ViewModels
 {
-    public class CreateInventoryViewModel
+    public class EditInventoryViewModel
     {
-        [Required(ErrorMessage = "Inventory name header title is required.")]
-        [StringLength(150, ErrorMessage = "Title cannot exceed 150 characters.")]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(150)]
         public string Title { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "A description or purpose must be specified.")]
+        [Required(ErrorMessage = "Description is required.")]
         public string Description { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please assign a classification category.")]
+        [Required(ErrorMessage = "Category is required.")]
         public string Category { get; set; } = string.Empty;
 
+        public string? ImageUrl { get; set; }
         public IFormFile? ImageFile { get; set; }
 
         public bool IsPublic { get; set; } = true;
 
-        [Required(ErrorMessage = "Custom ID generation template string format is required.")]
+        [Required(ErrorMessage = "Custom ID format is required.")]
         public string CustomIdFormat { get; set; } = "INV-{0:0000}";
+
+        public byte[]? RowVersion { get; set; }
 
         public bool CustomString1_State { get; set; }
         public string CustomString1_Name { get; set; } = "Custom String 1";

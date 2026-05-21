@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using CustomInventoryApp.Models;
+using Itransition_Course_Project.Models;
 
 namespace Itransition_Course_Project.ViewModels
 {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace CustomInventoryApp.Services.Interfaces
+namespace Itransition_Course_Project.Services.Interfaces
 {
     public interface ICustomIdGeneratorService
     {

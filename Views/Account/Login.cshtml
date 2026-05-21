@@ -5,17 +5,18 @@
 
 <div class="container mt-5" style="max-width: 480px;">
     <div class="card shadow border rounded">
-        <div class="card-header bg-light py-3 text-center">
-            <h3 class="h5 mb-0 text-secondary fw-bold">Welcome Back</h3>
+        <div class="card-header py-3 text-center">
+            <h3 class="h5 mb-0 fw-bold">Welcome Back</h3>
         </div>
         <div class="card-body p-4">
             <form asp-controller="Account" asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
                 <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                 <div class="mb-3">
                     <label class="form-label small fw-bold text-muted text-uppercase">Username or Email</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light text-muted"><i class="bi bi-person-badge-fill"></i></span>
+                        <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
                         <input asp-for="UsernameOrEmail" class="form-control" placeholder="Enter handle or email address" required />
                     </div>
                     <span asp-validation-for="UsernameOrEmail" class="text-danger small"></span>
@@ -24,7 +25,7 @@
                 <div class="mb-3">
                     <label class="form-label small fw-bold text-muted text-uppercase">Password</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light text-muted"><i class="bi bi-lock-fill"></i></span>
+                        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                         <input asp-for="Password" type="password" class="form-control" placeholder="Enter account password" required />
                     </div>
                     <span asp-validation-for="Password" class="text-danger small"></span>
@@ -32,14 +33,33 @@
 
                 <div class="form-check mb-4">
                     <input asp-for="RememberMe" type="checkbox" class="form-check-input" id="rememberMeCheck" />
-                    <label class="form-check-label small text-muted" for="rememberMeCheck">Keep me signed in on this device</label>
+                    <label class="form-check-label small text-muted" for="rememberMeCheck">Keep me signed in</label>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm fw-bold">Sign In</button>
             </form>
+
+            <hr class="my-4" />
+            <p class="text-center text-muted small mb-3">Or sign in with</p>
+            <div class="d-flex gap-2">
+                <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="flex-fill">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="provider" value="Google" />
+                    <button type="submit" class="btn btn-outline-danger w-100">
+                        <i class="bi bi-google"></i> Google
+                    </button>
+                </form>
+                <form asp-controller="Account" asp-action="ExternalLogin" method="post" class="flex-fill">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="provider" value="Facebook" />
+                    <button type="submit" class="btn btn-outline-primary w-100">
+                        <i class="bi bi-facebook"></i> Facebook
+                    </button>
+                </form>
+            </div>
         </div>
-        <div class="card-footer text-center py-3 bg-light border-top small">
-            New to the platform? <a asp-action="Register" class="text-decoration-none fw-bold">Create an account here</a>
+        <div class="card-footer text-center py-3 small">
+            New to the platform? <a asp-action="Register" class="text-decoration-none fw-bold">Create an account</a>
         </div>
     </div>
 </div>
