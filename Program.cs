@@ -5,8 +5,11 @@ using CustomInventoryApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration["ConnectionStrings__DefaultConnection"] 
+                       ?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -18,7 +21,15 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    context.Database.EnsureCreated();
+    try 
+    {
+        context.Database.EnsureCreated();
+        Console.WriteLine("Successfully connected to the database and ensured schema exists.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"DATABASE CONNECTION FAILED: {ex.Message}");
+    }
 }
 
 if (!app.Environment.IsDevelopment())
@@ -30,6 +41,8 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseAuthentication(); 
 app.UseAuthorization();
 
 app.MapControllerRoute(

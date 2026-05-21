@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Itransition_Course_Project.Controllers
 {
-    [Authorize] // Only authenticated registered users can manipulate inventory templates
+    [Authorize] 
     public class InventoryController : Controller
     {
         private readonly ApplicationDbContext _context;
